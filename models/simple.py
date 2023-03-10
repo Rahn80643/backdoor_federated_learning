@@ -36,11 +36,20 @@ class SimpleNet(nn.Module):
 
     def train_vis(self, vis, epoch, data_len, batch, loss, eid='main', name=None, win='vtrain'):
 
-        vis.line(X=np.array([(epoch-1)*data_len+batch]), Y=np.array([loss]),
+        # Variable loss sometimes is cuda.Tensor(), or cpu float, examine and convert the type before plotting
+        if(torch.is_tensor(loss)):
+            vis.line(X=np.array([(epoch-1)*data_len+batch]), Y=np.array([loss.cpu().numpy()]),
                                  env=eid,
                                  name=f'{name}' if name is not None else self.name, win=f'{win}_{self.created_time}',
                                  update='append' if vis.win_exists(f'{win}_{self.created_time}', env=eid) else None,
                                  opts=dict(showlegend=True, width=700, height=400, title='Train loss_{0}'.format(self.created_time)))
+
+        else:
+            vis.line(X=np.array([(epoch-1)*data_len+batch]), Y=np.array([loss]),
+                                 env=eid,
+                                 name=f'{name}' if name is not None else self.name, win=f'{win}_{self.created_time}',
+                                 update='append' if vis.win_exists(f'{win}_{self.created_time}', env=eid) else None,
+                                 opts=dict(showlegend=True, width=700, height=400, title='Train loss_{0}'.format(self.created_time)))        
 
 
 

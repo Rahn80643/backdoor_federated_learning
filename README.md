@@ -7,9 +7,21 @@ This code includes experiments for paper "How to Backdoor Federated Learning" (h
 
 All experiments are done using Python 3.7 and PyTorch 1.0.
 
-```mkdir saved_models```
+1. Create a virtual environment in conda 
+    ```conda env create --file environment.yml```
 
-```python training.py --params utils/params.yaml```
+2. Activate the conda environment
+    ```conda activate pytorch_backdoor_FL_test```
+
+3. Create a folder for models to be saved
+    ```mkdir saved_models```
+
+4. Open the visdom server for visualizing the training accuracy
+    ```python -m visdom.server``` 
+    (The server executes in background)
+
+5. Open another terminal, activate the conda environment, and use the following command to train the model
+    ```python -u training.py 2>&1 | tee -a log_20230310.log```
 
 
 I encourage to contact me (eugene@cs.cornell.edu) or raise Issues in GitHub, so I can provide more details and fix bugs. 
